@@ -9,7 +9,7 @@ const MainScreen = ({}: IMainScreen) => {
     <S.MainScreen>
       <Header />
       <S.MainScreenWrapper>
-        <Canvas canvasHeight={250} canvasWidth={500} />
+        <Canvas canvasHeight={400} canvasWidth={800} />
       </S.MainScreenWrapper>
     </S.MainScreen>
   )

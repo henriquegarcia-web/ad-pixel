@@ -20,6 +20,10 @@ type Point = {
 
 const ORIGIN = Object.freeze({ x: 0, y: 0 })
 
+const ZOOM_SENSITIVITY = 2000
+const INITIAL_ZOOM_FACTOR = 0.6
+const SQUARE_SIZE = 10000
+
 // adjust to device to avoid blur
 const { devicePixelRatio: ratio = 1 } = window
 
@@ -34,8 +38,6 @@ function addPoints(p1: Point, p2: Point) {
 function scalePoint(p1: Point, scale: number) {
   return { x: p1.x / scale, y: p1.y / scale }
 }
-
-const ZOOM_SENSITIVITY = 500 // bigger for lower zoom per scroll
 
 const Canvas = (props: ICanvas) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -61,7 +63,14 @@ const Canvas = (props: ICanvas) => {
         context.canvas.width = props.canvasWidth * ratio
         context.canvas.height = props.canvasHeight * ratio
         context.scale(ratio, ratio)
-        setScale(1)
+
+        const reductionFactor = INITIAL_ZOOM_FACTOR
+        const initialScale =
+          Math.min(
+            props.canvasWidth / SQUARE_SIZE,
+            props.canvasHeight / SQUARE_SIZE
+          ) * reductionFactor
+        setScale(initialScale)
 
         // reset state and refs
         setContext(context)
@@ -70,6 +79,9 @@ const Canvas = (props: ICanvas) => {
         setViewportTopLeft(ORIGIN)
         lastOffsetRef.current = ORIGIN
         lastMousePosRef.current = ORIGIN
+
+        // Apply initial scale
+        context.scale(initialScale, initialScale)
 
         // this thing is so multiple resets in a row don't clear canvas
         isResetRef.current = true
@@ -135,20 +147,23 @@ const Canvas = (props: ICanvas) => {
   // draw
   useLayoutEffect(() => {
     if (context) {
-      const squareSize = 20
-
       // clear canvas but maintain transform
       const storedTransform = context.getTransform()
       context.canvas.width = context.canvas.width
       context.setTransform(storedTransform)
 
+      // Ajuste para centralizar o quadrado
+      const centerX = props.canvasWidth / 2 / scale
+      const centerY = props.canvasHeight / 2 / scale
+
       context.fillRect(
-        props.canvasWidth / 2 - squareSize / 2,
-        props.canvasHeight / 2 - squareSize / 2,
-        squareSize,
-        squareSize
+        centerX - SQUARE_SIZE / 2,
+        centerY - SQUARE_SIZE / 2,
+        SQUARE_SIZE,
+        SQUARE_SIZE
       )
-      context.arc(viewportTopLeft.x, viewportTopLeft.y, 5, 0, 2 * Math.PI)
+
+      context.arc(viewportTopLeft.x, viewportTopLeft.y, 200, 0, 2 * Math.PI)
       context.fillStyle = 'red'
       context.fill()
     }
@@ -201,7 +216,7 @@ const Canvas = (props: ICanvas) => {
     function handleWheel(event: WheelEvent) {
       event.preventDefault()
       if (context) {
-        const zoom = 1 - event.deltaY / ZOOM_SENSITIVITY
+        const zoom = Math.exp(-event.deltaY / ZOOM_SENSITIVITY) // Use Math.exp para transição suave
         const viewportTopLeftDelta = {
           x: (mousePos.x / scale) * (1 - 1 / zoom),
           y: (mousePos.y / scale) * (1 - 1 / zoom)
@@ -227,21 +242,25 @@ const Canvas = (props: ICanvas) => {
 
   return (
     <div>
-      <button onClick={() => context && reset(context)}>Reset</button>
+      {/* <button onClick={() => context && reset(context)}>Reset</button>
       <pre>scale: {scale}</pre>
       <pre>offset: {JSON.stringify(offset)}</pre>
-      <pre>viewportTopLeft: {JSON.stringify(viewportTopLeft)}</pre>
-      <canvas
+      <pre>viewportTopLeft: {JSON.stringify(viewportTopLeft)}</pre> */}
+      <S.Canvas
         onMouseDown={startPan}
         ref={canvasRef}
-        width={props.canvasWidth * ratio}
-        height={props.canvasHeight * ratio}
-        style={{
-          border: '2px solid #000',
-          width: `${props.canvasWidth}px`,
-          height: `${props.canvasHeight}px`
-        }}
-      ></canvas>
+        // width={props.canvasWidth * ratio}
+        // height={props.canvasHeight * ratio}
+
+        // style={{
+        //   position: 'fixed',
+        //   top: 0,
+        //   left: 0,
+        //   border: '10px solid red',
+        //   width: '100vw',
+        //   height: '100vh'
+        // }}
+      ></S.Canvas>
     </div>
   )
 }
