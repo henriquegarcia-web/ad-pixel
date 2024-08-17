@@ -3,7 +3,7 @@ import * as S from './styles'
 
 const INITIAL_GRID_SIZE = 5
 
-interface IPainterImage {}
+interface ILandCreator {}
 
 const imageOptions = [
   '/tile_plant_01.png',
@@ -26,7 +26,7 @@ const groundOptions = [
   '/tile_ground_04.png'
 ]
 
-const PainterImage = ({}: IPainterImage) => {
+const LandCreator = ({}: ILandCreator) => {
   const [gridSize, setGridSize] = useState({
     rows: INITIAL_GRID_SIZE,
     cols: INITIAL_GRID_SIZE
@@ -74,7 +74,7 @@ const PainterImage = ({}: IPainterImage) => {
   }
 
   return (
-    <S.PainterImage>
+    <S.LandCreator>
       {/* ------------------------------------------ MENU ----- */}
 
       <div>
@@ -139,8 +139,8 @@ const PainterImage = ({}: IPainterImage) => {
           ))
         )}
       </div>
-    </S.PainterImage>
+    </S.LandCreator>
   )
 }
 
-export default PainterImage
+export default LandCreator

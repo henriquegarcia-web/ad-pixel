@@ -2,7 +2,13 @@ import { useEffect, useRef } from 'react'
 
 import * as S from './styles'
 
-import { CanvasTest, Header, Painter, PainterImage } from '@/components'
+import {
+  CanvasTest,
+  Header,
+  LandCreator,
+  Painter,
+  PainterImage
+} from '@/components'
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
 
 interface IMainScreen {}
@@ -15,8 +21,9 @@ const MainScreen = ({}: IMainScreen) => {
       <Header />
       <S.MainScreenWrapper>
         {/* <Painter /> */}
-        <PainterImage />
+        {/* <PainterImage /> */}
 
+        <LandCreator />
         {/* <TransformWrapper
           initialPositionX={-250}
           initialPositionY={100}

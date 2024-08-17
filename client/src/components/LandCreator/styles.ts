@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const PainterImage = styled.div`
+export const LandCreator = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
