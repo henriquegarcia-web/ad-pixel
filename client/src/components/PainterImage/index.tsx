@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import * as S from './styles'
 
+const INITIAL_GRID_SIZE = 5
+
 interface IPainterImage {}
 
 const imageOptions = [
@@ -25,10 +27,13 @@ const groundOptions = [
 ]
 
 const PainterImage = ({}: IPainterImage) => {
-  const [gridSize, setGridSize] = useState({ rows: 16, cols: 16 })
+  const [gridSize, setGridSize] = useState({
+    rows: INITIAL_GRID_SIZE,
+    cols: INITIAL_GRID_SIZE
+  })
   const [grid, setGrid] = useState(
-    Array.from({ length: 16 }, () =>
-      Array.from({ length: 16 }, () => ({
+    Array.from({ length: INITIAL_GRID_SIZE }, () =>
+      Array.from({ length: INITIAL_GRID_SIZE }, () => ({
         pixel: '',
         ground: groundOptions[Math.floor(Math.random() * groundOptions.length)]
       }))
@@ -48,15 +53,24 @@ const PainterImage = ({}: IPainterImage) => {
   const handleSizeChange = (dimension: 'rows' | 'cols', value: number) => {
     const newSize = { ...gridSize, [dimension]: value }
     setGridSize(newSize)
-    setGrid(
-      Array.from({ length: newSize.rows }, () =>
-        Array.from({ length: newSize.cols }, () => ({
-          pixel: '',
-          ground:
-            groundOptions[Math.floor(Math.random() * groundOptions.length)]
-        }))
+
+    setGrid((prevGrid) => {
+      const newGrid = Array.from({ length: newSize.rows }, (_, rowIdx) =>
+        Array.from({ length: newSize.cols }, (_, colIdx) => {
+          if (rowIdx < prevGrid.length && colIdx < prevGrid[rowIdx].length) {
+            return { ...prevGrid[rowIdx][colIdx] }
+          } else {
+            return {
+              pixel: '',
+              ground:
+                groundOptions[Math.floor(Math.random() * groundOptions.length)]
+            }
+          }
+        })
       )
-    )
+
+      return newGrid
+    })
   }
 
   return (
