@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import * as S from './styles'
 
-const INITIAL_GRID_SIZE = 5
+const INITIAL_GRID_SIZE = 4
 
 interface ILandCreator {}
 
@@ -77,68 +77,93 @@ const LandCreator = ({}: ILandCreator) => {
     <S.LandCreator>
       {/* ------------------------------------------ MENU ----- */}
 
-      <div>
-        <label>Rows: </label>
-        <input
-          type="number"
-          value={gridSize.rows}
-          onChange={(e) => handleSizeChange('rows', Number(e.target.value))}
-          max={16}
-          min={1}
-        />
-        <label>Cols: </label>
-        <input
-          type="number"
-          value={gridSize.cols}
-          onChange={(e) => handleSizeChange('cols', Number(e.target.value))}
-          max={16}
-          min={1}
-        />
-      </div>
-      <div>
-        <button onClick={() => setTool('brush')}>Brush</button>
-        <button onClick={() => setTool('eraser')}>Eraser</button>
-        <div>
-          {imageOptions.map((image, index) => (
-            <img
-              key={index}
-              src={image}
-              alt={`Option ${index}`}
-              style={{
-                border: selectedImage === image ? '2px solid blue' : 'none',
-                cursor: 'pointer',
-                margin: '0 5px',
-                width: '30px',
-                height: '30px'
+      <S.LandCreatorMenu>
+        <S.MenuWrapper>
+          <S.MenuWrapperLabel>Tamanho</S.MenuWrapperLabel>
+          <S.MenuWrapperContent>
+            <button
+              onClick={() => {
+                handleSizeChange('rows', 4)
+                handleSizeChange('cols', 4)
               }}
-              onClick={() => setSelectedImage(image)}
-            />
-          ))}
-        </div>
-      </div>
+            >
+              Pequeno
+            </button>
+            <button
+              onClick={() => {
+                handleSizeChange('rows', 8)
+                handleSizeChange('cols', 8)
+              }}
+            >
+              Grande
+            </button>
+            {/* <button onClick={() => {
+
+          }}>Médio</button>
+          <button onClick={() => {
+
+          }}>Grande</button> */}
+          </S.MenuWrapperContent>
+          {/* <label>Rows: </label>
+          <input
+            type="number"
+            value={gridSize.rows}
+            onChange={(e) => handleSizeChange('rows', Number(e.target.value))}
+            max={16}
+            min={1}
+          />
+          <label>Cols: </label>
+          <input
+            type="number"
+            value={gridSize.cols}
+            onChange={(e) => handleSizeChange('cols', Number(e.target.value))}
+            max={16}
+            min={1}
+          /> */}
+        </S.MenuWrapper>
+        <S.MenuWrapper>
+          <S.MenuWrapperLabel>Ativos</S.MenuWrapperLabel>
+          <S.MenuWrapperContent>
+            <button onClick={() => setTool('brush')}>Brush</button>
+            <button onClick={() => setTool('eraser')}>Eraser</button>
+            <div>
+              {imageOptions.map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={`Option ${index}`}
+                  style={{
+                    border: selectedImage === image ? '2px solid blue' : 'none',
+                    cursor: 'pointer',
+                    margin: '0 5px',
+                    width: '30px',
+                    height: '30px'
+                  }}
+                  onClick={() => setSelectedImage(image)}
+                />
+              ))}
+            </div>
+          </S.MenuWrapperContent>
+        </S.MenuWrapper>
+      </S.LandCreatorMenu>
 
       {/* ------------------------------------------ GRID ----- */}
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: `repeat(${gridSize.cols}, 30px)`,
-          borderLeft: '1px solid rgba(255, 255, 255, 0.5)',
-          borderTop: '1px solid rgba(255, 255, 255, 0.5)'
-        }}
-      >
-        {grid.map((row, rowIndex) =>
-          row.map((cell, colIndex) => (
-            <S.Tile
-              key={`${rowIndex}-${colIndex}`}
-              onClick={() => handlePixelClick(rowIndex, colIndex)}
-              style={{ backgroundImage: `url(${cell.ground})` }}
-            >
-              {cell.pixel && <img src={cell.pixel} alt="" />}
-            </S.Tile>
-          ))
-        )}
-      </div>
+      <S.LandCreatorGrid>
+        <S.LandCreatorLand cols={gridSize.cols}>
+          {grid.map((row, rowIndex) =>
+            row.map((cell, colIndex) => (
+              <S.Tile
+                key={`${rowIndex}-${colIndex}`}
+                onClick={() => handlePixelClick(rowIndex, colIndex)}
+                style={{ backgroundImage: `url(${cell.ground})` }}
+              >
+                {cell.pixel && <img src={cell.pixel} alt="" />}
+              </S.Tile>
+            ))
+          )}
+        </S.LandCreatorLand>
+      </S.LandCreatorGrid>
     </S.LandCreator>
   )
 }

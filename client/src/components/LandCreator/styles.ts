@@ -25,15 +25,40 @@ export const LandCreator = styled.div`
     height: 100%;
     object-fit: contain;
   }
+
+  border: 2px solid red;
 `
 
 // =============================================================== MENU
 
-// export const Tile = styled.div`
-//   display: flex;
-// `
+export const LandCreatorMenu = styled.div`
+  display: flex;
+`
+
+export const MenuWrapper = styled.div`
+  display: flex;
+`
+
+export const MenuWrapperLabel = styled.label`
+  display: flex;
+`
+
+export const MenuWrapperContent = styled.div`
+  display: flex;
+`
 
 // =============================================================== GRID
+
+export const LandCreatorGrid = styled.label`
+  display: flex;
+`
+
+export const LandCreatorLand = styled.div<{ cols: number }>`
+  display: grid;
+  grid-template-columns: ${({ cols }) => `repeat(${cols}, 30px)`};
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+`
 
 export const Tile = styled.div`
   display: flex;
