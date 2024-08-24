@@ -17,4 +17,6 @@ export const MainScreenWrapper = styled.div`
   flex: 1;
   justify-content: center;
   align-items: center;
+
+  border: 2px solid red;
 `

@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react'
 import * as S from './styles'
 
 import {
+  CanvasNew,
   CanvasTest,
   Header,
   LandCreator,
@@ -22,18 +23,19 @@ const MainScreen = ({}: IMainScreen) => {
       <S.MainScreenWrapper>
         {/* <Painter /> */}
         {/* <PainterImage /> */}
+        {/* <LandCreator /> */}
+        <CanvasNew />
 
-        <LandCreator />
         {/* <TransformWrapper
           initialPositionX={-250}
           initialPositionY={100}
-          minScale={2}
+          minScale={1}
           maxScale={50}
-          initialScale={12}
-          wheel={{ step: 0.8 }}
+          initialScale={1}
+          wheel={{ step: 0.4 }}
           limitToBounds={false}
           // ref={transformWrapperRef}
-          smooth={false}
+          smooth={true}
         >
           {({ zoomIn, zoomOut, resetTransform, centerView }) => (
             <TransformComponent
@@ -53,7 +55,7 @@ const MainScreen = ({}: IMainScreen) => {
                 border: '1px solid black'
               }}
             >
-              <CanvasTest />
+              <CanvasNew />
             </TransformComponent>
           )}
         </TransformWrapper> */}
